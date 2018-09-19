@@ -14,3 +14,6 @@ This gives us a few clues already:
 3. No stack canary, which points to a possible buffer overflow vulnerability.
 
 Jumping into ida, we can identify a buffer overflow which we can use to overwrite
+
+
+AAAA
