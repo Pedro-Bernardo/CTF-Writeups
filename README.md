@@ -126,4 +126,3 @@ Now we run the script and get the flag!
 
 ![alt text](screenshots/win.png)
 
-\- STT bl4ck
