@@ -18,7 +18,7 @@ Let's check it out in IDA:
 
 ![alt text](nononode.png)
 
-Here we can confirm that we are only allowed to store the 15 bytes the program asks for, so no overflows in this part. However, we can see a call to the goodbye function which, I assume, is where the programs asks for our initials and says good bye.
+Here we can confirm that we are only allowed to store the 15 bytes the program asks for, so no overflows in this part. However, we can see a call to the goodbye function which, I assume, is where the programs asks for our initials and says goodbye.
 
 ![alt text](goodbye_overflow.png)
 
