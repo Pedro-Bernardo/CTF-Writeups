@@ -41,6 +41,7 @@ Now the only thing left to know is where the nodes are, relative to each other, 
 Again using gdb, we can see that node 2 (lower address) is higher than node 1 (higher address) on the stack, 32 bytes appart.
 
 ![alt text](screenshots/node_off.png)
+
 (node 1 is filled with A's (0x41) and node 2 is filled with B's (0x42))
 
 # The Solution
