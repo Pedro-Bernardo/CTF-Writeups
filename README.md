@@ -70,7 +70,7 @@ This code is 27 bytes long and calls sys_execve("/bin/sh\x00", null, null). It's
 
 
 ```python
-#!/bin/python2
+#!/usr/bin/env python2.7
 from pwn import *
 binary_path = "./shellpointcode"
 
