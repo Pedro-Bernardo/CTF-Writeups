@@ -6,7 +6,7 @@ The clue was: "Linked lists are great! They let you chain pieces of data togethe
 
 Running checksec on the binary gives the following result:
 
-![alt text](checksec.png)
+![alt text](screenshots/checksec.png)
 
 This gives us a few clues already:
 1. NX is disabled and there are RWX segments, which points to possible shellcode injection.
@@ -19,28 +19,28 @@ Finally, it asks for our initials and then prints a goodbye message using our in
 Let's check it out in IDA:
 
 
-![alt text](nononode.png)
+![alt text](screenshots/nononode.png)
 
 Here we can confirm that we are only allowed to store the 15 bytes the program asks for, so no overflows in this part. However, we can see a call to the goodbye function which, I assume, is where the programs asks for our initials and says goodbye.
 
-![alt text](goodbye_overflow.png)
+![alt text](screenshots/goodbye_overflow.png)
 
 And indeed, we see the stack frame growing 16 bytes, and fgets reading 0x20 bytes into [rbp - 3], which means we have 29 bytes of overflow. 
 
 Testing it out wields the following result:
 
-![alt text](segfault.png)
+![alt text](screenshots/segfault.png)
 
 Aha! Just as we expected. So, there's our buffer overflow. With this, we should have enough space to overwrite the saved return address. Let's find out the offset between our input and the saved return address in gdb.
 
-![alt text](offset.png)
+![alt text](screenshots/offset.png)
 
 The highlighted value is what we want to overwrite and it's 11 bytes away from where our input is stored.
 
 Now the only thing left to know is where the nodes are, relative to each other, so we can have the big picture of what's going on.
 Again using gdb, we can see that node 2 (lower address) is higher than node 1 (higher address) on the stack, 32 bytes appart.
 
-![alt text](node_off.png)
+![alt text](screenshots/node_off.png)
 (node 1 is filled with A's (0x41) and node 2 is filled with B's (0x42))
 
 # The Solution
@@ -124,6 +124,6 @@ p.interactive()
 
 Now we run the script and get the flag!
 
-![alt text](win.png)
+![alt text](screenshots/win.png)
 
 \- STT bl4ck
