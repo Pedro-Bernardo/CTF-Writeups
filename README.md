@@ -1,3 +1,6 @@
+# Introduction 
+shell->code was a 100 points pwn challenge on the CSAW’18 CTF Qualification Round
+
 # Reversing (The Problem)
 The clue was: "Linked lists are great! They let you chain pieces of data together"
 
