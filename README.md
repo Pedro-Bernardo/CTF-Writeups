@@ -11,7 +11,6 @@ Running checksec on the binary gives the following result:
 This gives us a few clues already:
 1. NX is disabled and there are RWX segments, which points to possible shellcode injection
 2. Full RELRO means that we can also overwrite the GOT if needed.
-3. No stack ca
-nary, which points to a possible buffer overflow vulnerability.
+3. No stack canary, which points to a possible buffer overflow vulnerability.
 
 Jumping into ida, we can identify a buffer overflow which we can use to overwrite
