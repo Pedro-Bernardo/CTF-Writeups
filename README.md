@@ -66,7 +66,7 @@ We have to keep in mind that fgets stops when it sees a \x00, so our shellcode c
 ```
 
 First, the complement of "/bin/sh\x00" is moved into the rbx register, and then, before we push rbx we run a not on it. This way, we can push "/bin/sh\x00" without any 0's in our code.
-Then I found the exact offset on gdb to where we wanted our code to jump and hardcoded it. The rest is straightforward x86-64, avoiding instructions with 0's in them.
+Then I found the exact offset on gdb to where we wanted our code to jump to and hardcoded it. The rest is straightforward x86-64, avoiding instructions with 0's in them.
 This code is 27 bytes long and calls sys_execve("/bin/sh\x00", null, null). It's split into 15 bytes in node 2 and 12 bytes in node 1.
 
 
