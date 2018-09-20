@@ -16,7 +16,7 @@ This gives us a few clues already:
 Running the program, it asks twice for 15 bytes of data, to store on two separate linked list nodes, node 1 and node 2. Then it leaks the second node's address through the "next" pointer in the first node.
 Finally, it asks for our initials and then prints a goodbye message using our input.
 
-Let's check it out in IDA:
+Let's check it out in IDA Free:
 
 
 ![alt text](screenshots/nononode.png)
