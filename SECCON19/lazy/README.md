@@ -171,7 +171,7 @@ Here are two exploitable vulnerabilities:
 2. Format String vulnerability when printing the file name
 
 ## Exploitation plan
-We saw previously the binary has no **PIE**, but has **FULL RELRO** so it's impossible to overwrite the **GOT**. We can still use to get libc leaks, tho.
+We saw previously the binary has no **PIE**, but has **FULL RELRO** so it's impossible to overwrite the **GOT**. We can still use the GOT to get libc leaks, tho.
 
 This limits our exploitation options. We can use the buffer overflow to control the RIP by overwriting the saved RIP on the stack, but we have to bypass the `stack canary`. Luckily, we can leak it with our format string. But where would we return to? The perfect solution would be a ret2libc attack, but we don't know the libc that is uesd and we can't just download it since the program checks for `.` in the filename before calling the `download` function.
 
@@ -195,7 +195,7 @@ puts(&dest);
 Then it just sends us the file contents.
 
 ## Getting the Libc
-With a few tests, I ftigured out that our input is at offset 6 from the `printf(s)`, so we could access our input directly via format the string by using the positional argument `"%6$s"`.
+With a few tests, I figured out that our input is at offset 6 from the `printf(s)`, so we could access our input directly via the positional argument `"%6$s"`.
 We can also offset the saved EBP in the stack and leak it by using the `"%10$p"` format. With this, we can calculate the address of our input on the stack.
 
 ```python
@@ -268,14 +268,14 @@ with open("libc.so.6", "wb") as f:
 
 ## The Final Exploit
 Unfortunately, for some reason I couldn't download the libc without it getting corrupted somehow, so I couldn't use `objdump` to find the function offsets.  
-I decided to put load it in a binary analysis program and look for known funcitons.   
+I decided to load it in a binary analysis program and look for known functions.   
 I found this string: `GNU C Library (GNU libc) stable release version 2.23, by Roland McGrath et al.`.   
 This led me to believe that it was not a standard glibc compiled by Ubuntu like it usually is, which means that the offsets will most likely differ.
 
 None of the programs were able to parse it correctly, but I found some strings used in the `malloc` function so I used them to find out the offset of malloc inside the libc. I also quickly found out that some of the symbols would load correctly, so I managed to find `system` as well.  
 I used `strings` with the -o option to find the offset of the "/bin/sh\x00" string.  
 
-I also found a `pop rdi; ret` gadget in the binary itself. This allows us to try the standard `ret to system`.  
+I also found a `pop rdi; ret` gadget in the binary itself. This allows us to try the standard `ret to system` attack.  
 All that we need is to get a leak from a known function, like `malloc`, calculate the libc base and subsequently the addresses of system and the "/bin/sh\x00" string and use our overflow to overwrite the saved RIP.
 
 The only obstacle is the canary, but we can just leak it first and just keep it unchanged.
